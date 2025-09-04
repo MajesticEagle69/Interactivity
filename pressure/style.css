@@ -3,6 +3,8 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+
+    transition: all 300ms ease;
 }
 
 #target {
