@@ -1,0 +1,13 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#circle {
+    width: 200px;
+    height: 200px;
+    background-color: rgb(0, 150, 150);
+    border-radius: 50%;
+}
