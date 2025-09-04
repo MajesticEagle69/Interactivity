@@ -20,7 +20,7 @@ function buildup() {
 }
 
 function release() {
-    for(let i = 0; i < timesPressed; i++) {
+    for(let i = 1; i -1 < timesPressed; i++) {
         setTimeout(moveBTN, delay * i);
     }
     

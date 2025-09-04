@@ -4,68 +4,64 @@
 *  deflating: boolean
 *  infalteValue: number
 *  defaltevalue: number
-*  colorValue:number
+*  pressure:number
  * }} State
  */
 
 
-let press = false;
 let deflating = false;
 
-let infalteValue = 2.5;
+let infalteValue = 3;
 let defaltevalue = 7;
-let colorValue = 0;
+let pressure = 50;
 
-let circle;
+let div;
 
 document.addEventListener("DOMContentLoaded", setup);
 
 function setup() {
-    circle = document.getElementById('circle');
+    div = document.getElementById('target');
 
     loop();
 }
 
 function loop() {
-    document.addEventListener("keydown", function(event) {
-        press = true;
-        
+    document.addEventListener("keydown", function(event) {        
         if(!deflating) {
-            colorValue += infalteValue;
-            infalteValue -= 0.012;
+            pressure += infalteValue;
+            infalteValue -= 0.008;
 
             if (infalteValue < 0.001) {
                 infalteValue = 0.001;
             }
 
-            console.log(infalteValue);
+            div.style.height = `${pressure}px`;
+            div.style.width = `${pressure}px`;
 
-            circle.style.backgroundColor = `rgb(${colorValue}, 150, 150)`;
-
-            if (colorValue > 255) {
-            colorValue = 255;
+            if (pressure > 700) {
+            pressure = 700;
             }
-            console.log(colorValue);
+            console.log(pressure);
         }else {
-            colorValue -= defaltevalue;
-
-            circle.style.backgroundColor = `rgb(${colorValue}, 150, 150)`;
-
-            console.log(colorValue);
-    
-            if (colorValue < 0) {
-                colorValue = 0;
+            pressure -= defaltevalue;
+            if (pressure < 50) {
+                pressure = 50;
             }
+            defaltevalue += 0.8;
+
+            div.style.height = `${pressure}px`;
+            div.style.width = `${pressure}px`;
+
+            console.log(pressure);
         }
 
     });
 
     document.addEventListener("keyup", function(event) {
-        press = false;
-
         deflating = !deflating;
 
-        infalteValue = 2.5;
+        infalteValue = 3;
+        defaltevalue = 7;
 
         console.log(deflating);
     });
