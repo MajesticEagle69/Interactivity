@@ -9,6 +9,7 @@ const settings = Object.freeze({
 *  infalteValue: number
 *  defaltevalue: number
 *  pressure: number
+*  div: HTMLElement|null
  * }} State
  */
 
@@ -18,16 +19,13 @@ let state = Object.freeze({
   deflating: false,
   infalteValue: 3,
   defaltevalue: 7,
-  pressure: 50
+  pressure: 50,
+  div: null
 });
-
-let div;
 
 document.addEventListener("DOMContentLoaded", setup);
 
 function setup() {
-    div = /** @type HTMLElement|null */ (document.getElementById('target'));
-
     document.addEventListener(`keydown`, onKeyDown);
     document.addEventListener(`keyup`, onKeyUp);
 
@@ -36,10 +34,16 @@ function setup() {
 
 /**
  * @param {State} pressure
+ * @param {State} div
  * @returns
  */
 function use(){
     const {pressure} = state;
+    let {div} = state;
+
+    if(!div) {
+        return;
+    }
 
     div.style.height = `${pressure}px`;
     div.style.width = `${pressure}px`;
@@ -50,11 +54,17 @@ function use(){
  * @param {State} infalteValue
  * @param {State} defaltevalue
  * @param {State} deflating
+ * @param {State} div
  * @returns
  */
 function onKeyDown() {
-    let {deflating, pressure, infalteValue, defaltevalue} = state;
+    let {deflating, pressure, infalteValue, defaltevalue, div} = state;
     const {inflateFactor, deflateFactor} = settings;
+
+    if(!div) {
+        div = /** @type HTMLElement|null */ (document.getElementById('target'));
+    }
+
     if(!deflating) {
         pressure += infalteValue;
         infalteValue -= inflateFactor;
@@ -77,28 +87,28 @@ function onKeyDown() {
         console.log(pressure);
     }
 
-    saveState({ pressure, infalteValue, defaltevalue, deflating });
+    saveState({ pressure, infalteValue, defaltevalue, deflating, div });
 }
 
 /**
- * @param {State} pressure
  * @param {State} infalteValue
  * @param {State} defaltevalue
  * @param {State} deflating
  * @returns
  */
 function onKeyUp() {
-    let {deflating, infalteValue, defaltevalue, pressure} = state;
+    let {deflating} = state;
     deflating = !deflating;
-
-    infalteValue = 3;
-    defaltevalue = 7;
 
     console.log(deflating);
 
-    saveState({ pressure, infalteValue, defaltevalue, deflating });
+    saveState({ infalteValue: 3, defaltevalue: 7, deflating });
 }
 
+/**
+ * 
+ * @param {Partial<State>} changes
+ */
 function saveState(s) {
     state = Object.freeze({
         ...state,
